@@ -1,0 +1,5 @@
+{
+  "name": "SmartCrop AI",
+  "description": "An intelligent image extraction tool that uses Gemini Vision to automatically detect and crop specific sections of documents or images based on natural language requests, then exports them as a ZIP file.",
+  "requestFramePermissions": []
+}

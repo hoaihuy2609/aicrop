@@ -4,12 +4,12 @@ import { AppStatus, ExtractionResult, DetectedItem } from './types';
 import { detectObjects } from './services/geminiService';
 import { cropImage, createZipArchive } from './utils/imageProcessing';
 import { convertPdfToImages } from './utils/pdfProcessing';
-import { 
-  Upload, 
-  Scissors, 
-  Download, 
-  RefreshCw, 
-  CheckCircle2, 
+import {
+  Upload,
+  Scissors,
+  Download,
+  RefreshCw,
+  CheckCircle2,
   AlertCircle,
   ImageIcon,
   Search,
@@ -118,7 +118,7 @@ const App: React.FC = () => {
         setProgress(Math.round(pageProgressBase + (pageProgressStep * 0.2)));
 
         const detections: DetectedItem[] = await detectObjects(currentPageSrc, prompt);
-        
+
         setProgress(Math.round(pageProgressBase + (pageProgressStep * 0.6)));
 
         if (detections.length > 0) {
@@ -132,7 +132,7 @@ const App: React.FC = () => {
             allResults.push(cropped);
           }
         }
-        
+
         setProgress(Math.round(pageProgressBase + pageProgressStep));
       }
 
@@ -212,17 +212,20 @@ const App: React.FC = () => {
             <div className="bg-indigo-600 p-2 rounded-lg">
               <Scissors className="w-5 h-5 text-white" />
             </div>
-            <h1 className="text-xl font-bold text-slate-900 tracking-tight">SmartCrop <span className="text-indigo-600">AI</span></h1>
+            <h1 className="text-xl font-bold text-slate-900 tracking-tight flex items-center gap-1">
+              SmartCrop <span className="text-indigo-600">AI</span>
+              <span className="text-xs bg-indigo-100 text-indigo-700 px-2 py-0.5 rounded-full border border-indigo-200 ml-2">v1.1</span>
+            </h1>
           </div>
           <div className="flex items-center gap-4">
-            <button 
+            <button
               onClick={toggleAppFullscreen}
               className="p-2 text-slate-500 hover:text-indigo-600 hover:bg-slate-100 rounded-lg transition-all"
               title={isAppFullscreen ? "Thoát toàn màn hình" : "Mở toàn màn hình"}
             >
               {isAppFullscreen ? <Minimize2 className="w-5 h-5" /> : <Maximize className="w-5 h-5" />}
             </button>
-            <button 
+            <button
               onClick={reset}
               className="text-sm font-medium text-slate-500 hover:text-slate-800 transition-colors flex items-center gap-1"
             >
@@ -243,11 +246,10 @@ const App: React.FC = () => {
 
             <div className="grid md:grid-cols-2 gap-6">
               <div className="space-y-4">
-                <div 
+                <div
                   onClick={() => fileInputRef.current?.click()}
-                  className={`relative aspect-video rounded-xl border-2 border-dashed flex flex-col items-center justify-center cursor-pointer transition-all ${
-                    imagePages.length > 0 ? 'border-indigo-300 bg-indigo-50' : 'border-slate-300 bg-slate-50 hover:bg-slate-100'
-                  }`}
+                  className={`relative aspect-video rounded-xl border-2 border-dashed flex flex-col items-center justify-center cursor-pointer transition-all ${imagePages.length > 0 ? 'border-indigo-300 bg-indigo-50' : 'border-slate-300 bg-slate-50 hover:bg-slate-100'
+                    }`}
                 >
                   {status === AppStatus.UPLOADING ? (
                     <div className="flex flex-col items-center">
@@ -271,24 +273,23 @@ const App: React.FC = () => {
                       <p className="text-xs text-slate-400 mt-1">Ảnh hoặc PDF đề bài</p>
                     </>
                   )}
-                  <input 
-                    type="file" 
-                    ref={fileInputRef} 
-                    onChange={handleFileChange} 
-                    accept="image/*,application/pdf" 
-                    className="hidden" 
+                  <input
+                    type="file"
+                    ref={fileInputRef}
+                    onChange={handleFileChange}
+                    accept="image/*,application/pdf"
+                    className="hidden"
                   />
                 </div>
-                
+
                 {imagePages.length > 1 && (
                   <div className="flex gap-2 overflow-x-auto pb-2 scrollbar-hide">
                     {imagePages.map((page, idx) => (
                       <button
                         key={idx}
                         onClick={() => setSelectedPageIndex(idx)}
-                        className={`flex-shrink-0 w-12 h-16 rounded border-2 transition-all overflow-hidden ${
-                          selectedPageIndex === idx ? 'border-indigo-500 scale-105 shadow-md' : 'border-slate-200 opacity-60'
-                        }`}
+                        className={`flex-shrink-0 w-12 h-16 rounded border-2 transition-all overflow-hidden ${selectedPageIndex === idx ? 'border-indigo-500 scale-105 shadow-md' : 'border-slate-200 opacity-60'
+                          }`}
                       >
                         <img src={page} className="w-full h-full object-cover" alt={`Page ${idx + 1}`} />
                       </button>
@@ -310,15 +311,14 @@ const App: React.FC = () => {
                     className="w-full min-h-[120px] px-4 py-3 rounded-xl border border-slate-300 focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 transition-all text-slate-800 placeholder:text-slate-400 resize-none"
                   />
                 </div>
-                
+
                 <button
                   onClick={handleProcess}
                   disabled={imagePages.length === 0 || !prompt || status === AppStatus.PROCESSING}
-                  className={`w-full py-3.5 rounded-xl font-bold flex items-center justify-center gap-2 transition-all ${
-                    imagePages.length === 0 || !prompt || status === AppStatus.PROCESSING
+                  className={`w-full py-3.5 rounded-xl font-bold flex items-center justify-center gap-2 transition-all ${imagePages.length === 0 || !prompt || status === AppStatus.PROCESSING
                       ? 'bg-slate-200 text-slate-400 cursor-not-allowed'
                       : 'bg-indigo-600 text-white hover:bg-indigo-700 shadow-lg shadow-indigo-200 active:scale-95'
-                  }`}
+                    }`}
                 >
                   {status === AppStatus.PROCESSING ? (
                     <>
@@ -378,8 +378,8 @@ const App: React.FC = () => {
 
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
               {results.map((res, idx) => (
-                <div 
-                  key={res.id} 
+                <div
+                  key={res.id}
                   onClick={() => setPreviewIdx(idx)}
                   className="bg-white p-3 rounded-xl border border-slate-200 shadow-sm group hover:border-indigo-400 hover:shadow-md transition-all cursor-zoom-in active:scale-[0.98]"
                 >
@@ -414,20 +414,20 @@ const App: React.FC = () => {
 
       {/* Preview Modal */}
       {previewIdx !== null && (
-        <div 
+        <div
           ref={previewContainerRef}
           className="fixed inset-0 z-50 flex items-center justify-center bg-black/95 backdrop-blur-sm p-4 animate-in fade-in duration-200 overflow-hidden"
         >
           {/* Controls Overlay */}
           <div className="absolute top-6 right-6 flex items-center gap-4 z-[60]">
-            <button 
+            <button
               onClick={togglePreviewFullscreen}
               className="text-white/70 hover:text-white transition-colors p-2 bg-white/10 hover:bg-white/20 rounded-lg"
               title={isPreviewFullscreen ? "Thoát toàn màn hình" : "Toàn màn hình"}
             >
               {isPreviewFullscreen ? <Minimize2 className="w-6 h-6" /> : <Maximize className="w-6 h-6" />}
             </button>
-            <button 
+            <button
               onClick={() => setPreviewIdx(null)}
               className="text-white/70 hover:text-white transition-colors p-2 bg-white/10 hover:bg-white/20 rounded-lg"
               title="Đóng"
@@ -435,29 +435,29 @@ const App: React.FC = () => {
               <X className="w-6 h-6" />
             </button>
           </div>
-          
-          <button 
+
+          <button
             onClick={handlePrevPreview}
             className="absolute left-4 top-1/2 -translate-y-1/2 z-[60] bg-white/10 hover:bg-white/20 p-4 rounded-full text-white transition-all backdrop-blur-md"
             title="Ảnh trước (Mũi tên trái)"
           >
             <ChevronLeft className="w-8 h-8" />
           </button>
-          
+
           <div className="w-full h-full flex flex-col items-center justify-center">
             <div className="relative group max-w-full max-h-full flex items-center justify-center">
-              <img 
-                src={results[previewIdx].dataUrl} 
-                className={`max-w-full max-h-[85vh] object-contain rounded-lg shadow-2xl animate-in zoom-in-95 duration-300 ${isPreviewFullscreen ? 'h-screen w-screen max-h-screen object-contain' : ''}`} 
-                alt="Preview Full" 
+              <img
+                src={results[previewIdx].dataUrl}
+                className={`max-w-full max-h-[85vh] object-contain rounded-lg shadow-2xl animate-in zoom-in-95 duration-300 ${isPreviewFullscreen ? 'h-screen w-screen max-h-screen object-contain' : ''}`}
+                alt="Preview Full"
               />
             </div>
-            
+
             {!isPreviewFullscreen && (
               <div className="mt-6 text-center animate-in slide-in-from-bottom-2 duration-300">
                 <p className="text-white font-medium text-lg tracking-wide">{results[previewIdx].label}</p>
                 <p className="text-white/50 text-sm mt-1">Ảnh {previewIdx + 1} / {results.length}</p>
-                <button 
+                <button
                   onClick={() => {
                     const a = document.createElement('a');
                     a.href = results[previewIdx].dataUrl;
@@ -473,7 +473,7 @@ const App: React.FC = () => {
             )}
           </div>
 
-          <button 
+          <button
             onClick={handleNextPreview}
             className="absolute right-4 top-1/2 -translate-y-1/2 z-[60] bg-white/10 hover:bg-white/20 p-4 rounded-full text-white transition-all backdrop-blur-md"
             title="Ảnh tiếp theo (Mũi tên phải)"
